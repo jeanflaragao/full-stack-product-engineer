@@ -179,7 +179,7 @@ Resource not visible
 
 # 5. Application Error Boundary
 
-**Status: Partially Implemented**
+**Status: Currently Used**
 
 ## Problem
 
@@ -205,14 +205,15 @@ API error response
 
 ## Current Application Usage
 
-The application is currently implementing this architecture through:
+The application uses this architecture through:
 
 - `ApplicationError`;
 - typed subclasses;
 - `ErrorHandler`;
-- centralized `rescue_from`.
+- centralized `rescue_from`;
+- request-level translation of authentication and resource-not-found failures into structured API responses.
 
-The implementation is currently being refactored and validated.
+Day 37 request specs verify the externally observable `401 Unauthorized` and structured `404 Not Found` behavior. This is evidence for the boundary itself, but not for the broader application-service failure contract described by ADR-0002.
 
 ## Appropriate Use
 
@@ -220,7 +221,23 @@ Use an explicit error boundary when internal failure mechanisms should not leak 
 
 ---
 
-# 6. Layered Architecture
+# 6. Application Service Failure Contract
+
+**Status: Studied / Explored**
+
+## Purpose
+
+Known application exceptions normally propagate through services until an appropriate application boundary translates them. A service rescues only when it has a specific business reason to recover or translate, and services remain independent of HTTP.
+
+## Current Evidence
+
+ADR-0002 records this as a Proposed decision. Day 37 removed `Bookmakers::ActiveAccountsExistError` because no Account domain or active-account invariant exists. The application therefore has no real business workflow yet that validates service-to-HTTP propagation of a known application exception.
+
+The active-account scenario is a deferred example for reconsideration after the Account domain exists, not current production behavior.
+
+---
+
+# 7. Layered Architecture
 
 **Status: Currently Used**
 
@@ -242,7 +259,7 @@ The architecture is intentionally pragmatic rather than a strict implementation 
 
 ---
 
-# 7. Serializer
+# 8. Serializer
 
 **Status: Currently Used**
 
@@ -268,7 +285,7 @@ Use serializers when API representations need to remain explicit and independent
 
 ---
 
-# 8. API Response Contract
+# 9. API Response Contract
 
 **Status: Currently Used**
 
@@ -311,7 +328,7 @@ The contract is documented in ADR-0001.
 
 ---
 
-# 9. Repository / Active Record Boundary
+# 10. Repository / Active Record Boundary
 
 **Status: Studied / Explored**
 
@@ -339,7 +356,7 @@ This is an example of applying the principle:
 
 ---
 
-# 10. Dependency Injection
+# 11. Dependency Injection
 
 **Status: Studied / Explored**
 
@@ -366,7 +383,7 @@ Dependency Injection should be introduced when dependency management becomes a m
 
 ---
 
-# 11. Transaction Script
+# 12. Transaction Script
 
 **Status: Studied / Explored**
 
@@ -392,7 +409,7 @@ The pattern should therefore be evaluated against the complexity of the domain.
 
 ---
 
-# 12. Domain Model
+# 13. Domain Model
 
 **Status: Studied / Explored**
 
@@ -412,7 +429,7 @@ The goal is not to turn every Active Record model into a highly abstract domain 
 
 ---
 
-# 13. Domain Service
+# 14. Domain Service
 
 **Status: Studied / Explored**
 
@@ -434,7 +451,7 @@ Do not use Domain Services as generic containers for logic that simply does not 
 
 ---
 
-# 14. Hexagonal Architecture
+# 15. Hexagonal Architecture
 
 **Status: Planned / Studied**
 
@@ -472,7 +489,7 @@ It should not be introduced mechanically.
 
 ---
 
-# 15. Clean Architecture
+# 16. Clean Architecture
 
 **Status: Studied / Explored**
 
@@ -497,7 +514,7 @@ The useful concepts include:
 
 ---
 
-# 16. Onion Architecture
+# 17. Onion Architecture
 
 **Status: Studied / Explored**
 
@@ -527,7 +544,7 @@ The project studies Onion Architecture primarily as a way to reason about depend
 
 ---
 
-# 17. Domain-Driven Design
+# 18. Domain-Driven Design
 
 **Status: Planned / Studied**
 
@@ -557,7 +574,7 @@ The project should not introduce DDD terminology without corresponding domain pr
 
 ---
 
-# 18. Domain Events
+# 19. Domain Events
 
 **Status: Planned**
 
@@ -593,7 +610,7 @@ They should therefore be introduced deliberately.
 
 ---
 
-# 19. Outbox Pattern
+# 20. Outbox Pattern
 
 **Status: Planned**
 
@@ -629,7 +646,7 @@ The project should study the pattern as a mechanism for reliable event publicati
 
 ---
 
-# 20. CQRS
+# 21. CQRS
 
 **Status: Planned**
 
@@ -661,7 +678,7 @@ Separating every query and command from the beginning would create unnecessary c
 
 ---
 
-# 21. Event-Driven Architecture
+# 22. Event-Driven Architecture
 
 **Status: Planned**
 
@@ -699,7 +716,7 @@ Important concerns include:
 
 ---
 
-# 22. Saga
+# 23. Saga
 
 **Status: Planned**
 
@@ -736,7 +753,7 @@ The project should distinguish between:
 
 ---
 
-# 23. Background Job
+# 24. Background Job
 
 **Status: Planned**
 
@@ -768,7 +785,7 @@ Background jobs require explicit thinking about:
 
 ---
 
-# 24. Idempotency
+# 25. Idempotency
 
 **Status: Planned / Studied**
 
@@ -793,7 +810,7 @@ Idempotency should be designed around the business operation rather than impleme
 
 ---
 
-# 25. Feature Flag
+# 26. Feature Flag
 
 **Status: Planned**
 
@@ -818,7 +835,7 @@ Feature flags introduce lifecycle complexity and should have ownership and remov
 
 ---
 
-# 26. Observability Patterns
+# 27. Observability Patterns
 
 **Status: Planned**
 
