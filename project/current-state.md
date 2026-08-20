@@ -13,7 +13,8 @@ Evidence includes:
 - two ADRs in `docs/adr/`;
 - ADR-0001 is Accepted;
 - ADR-0002 is Proposed;
-- active uncommitted work in the backend submodule implementing the exception architecture described by those ADRs;
+- Day 37 verification of the current bookmaker-destruction boundary;
+- the verified Day 37 backend changes are pushed directly to `jeanflaragao/backend`'s `main` branch; no associated pull request was found;
 - the root README identifies the project as being in the `core-domain-phase`.
 
 ---
@@ -111,9 +112,18 @@ Existing tests include:
 - bookmaker index request specs;
 - bookmaker create request specs;
 - bookmaker destroy request specs;
+- `Bookmakers::DestroyService` service specs;
 - policy specs;
 - model specs;
 - `Bookmakers::CreateService` service specs.
+
+Day 37 strengthened deletion coverage across service and HTTP boundaries. The verified backend suite result is:
+
+```text
+30 examples, 0 failures
+```
+
+The service spec verifies deletion of the supplied bookmaker. Request specs verify `204 No Content` with an empty body and the intended database effect, plus state-preserving `404 Not Found` and `401 Unauthorized` failures. Invisible and nonexistent resources use the structured `resource_not_found` contract.
 
 ---
 
@@ -173,7 +183,7 @@ while the Dockerfile specifies Ruby 3.2.2.
 
 ## Exception and Error Architecture
 
-The application is currently undergoing an exception-handling refactor.
+The application has an application error boundary for translating known failures into the API response contract.
 
 The intended architecture includes:
 
@@ -183,26 +193,26 @@ The intended architecture includes:
 - `ErrorHandler`;
 - translation of known exceptions into the API response contract.
 
-Current work includes:
+Current implementation includes:
 
 - `AuthenticationError`;
 - `ValidationError`;
 - centralized `rescue_from` handling;
-- replacing ad-hoc JSON error rendering with raised application exceptions.
+- structured translation of authentication and resource-not-found failures.
 
-The work is currently uncommitted.
+ADR-0002 remains Proposed. The current application still lacks a real business workflow in which a known application exception propagates from a service to the HTTP boundary, so Day 37 does not provide the evidence required to accept that decision.
 
----
+## Bookmaker Deletion Boundary
 
-## Bookmaker Deletion Guard
+`Bookmakers::DestroyService` synchronously destroys the authorized bookmaker with `destroy!`.
 
-`Bookmakers::ActiveAccountsExistError` exists but is not currently raised by the destruction flow.
+The HTTP boundary returns:
 
-The current `Bookmakers::DestroyService` calls:
+- `204 No Content` with an empty body after successful deletion;
+- `404 Not Found` when the resource is nonexistent or outside the authenticated user's visible scope;
+- `401 Unauthorized` for an unauthenticated request.
 
-`bookmaker.destroy!`
-
-The business-rule guard therefore exists as a defined concept but is not yet wired into the service behavior.
+There is no active-account deletion guard. The application has no `Account` model, `accounts` table, bookmaker-account association, or active-account lifecycle, so such a guard is not currently executable domain behavior. Day 37 removed `Bookmakers::ActiveAccountsExistError` under YAGNI; it should be reconsidered only when the Account domain supplies a real invariant.
 
 ---
 
@@ -240,11 +250,7 @@ The following capabilities have roadmap evidence but no corresponding implementa
 
 The application roadmap includes account and financial functionality.
 
-However:
-
-- `app/services/accounts/create_service.rb` is an empty stub;
-- there is no `accounts` table;
-- there is no `Account` model.
+However, there is no `accounts` table or `Account` model. Day 37 removed the premature `Accounts::CreateService` placeholder because its path established an invalid Zeitwerk autoloading contract without executable domain behavior.
 
 `Bookmakers::UpdateService` is also currently an empty stub.
 
@@ -340,7 +346,7 @@ method.
 
 ## Current Error Boundary Architecture
 
-The application is currently transitioning toward:
+The application uses the following boundary for implemented known failures:
 
 ```text
 Service
@@ -356,7 +362,7 @@ API error contract
 
 The `rescue_from` ordering in the error handler is considered load-bearing for the current design.
 
-This architecture is currently being implemented and validated through tests.
+The broader service-failure propagation contract remains proposed until a real business workflow validates it.
 
 ---
 
@@ -425,7 +431,7 @@ Location:
 
 `docs/adr/0002-application-service-failure-contract.md`
 
-This ADR remains Proposed until the implementation and tests validate the approach.
+Day 37 clarified the intended boundary but removed the artificial active-account workflow. This ADR remains Proposed until a real domain workflow validates exception propagation from a service to the HTTP boundary.
 
 ---
 
@@ -448,57 +454,40 @@ This repository split is an existing architectural characteristic of the applica
 
 Known technical debt includes:
 
-- `ActiveAccountsExistError` exists but is not raised.
 - `Bookmakers::UpdateService` is an empty stub.
-- `Accounts::CreateService` is an empty stub.
 - `.ruby-version` is inconsistent with the Dockerfile Ruby version.
 - Query Objects do not currently have dedicated specs.
 - There is no `User` model spec.
 - CI is completely disabled.
 - Kamal deployment configuration contains placeholders.
-- The exception-handling refactor is currently uncommitted.
 - ADR-0002 remains Proposed.
-- The backend currently has uncommitted changes related to the error-handling refactor.
+- The Account domain and its deletion invariant remain future product work.
 
 ---
 
-# Current Work in Progress
+# Latest Completed Work
 
-The active engineering work is centered on implementing the exception architecture defined by ADR-0001 and ADR-0002.
+Day 37 completed the design and verification of the current bookmaker-destruction boundary.
 
-Current work includes:
+Completed work includes:
 
-- centralizing error handling in `ErrorHandler`;
-- moving Pundit and Pagy rescue behavior into the centralized error boundary;
-- replacing ad-hoc authentication error responses with `AuthenticationError`;
-- introducing `ValidationError` for `RecordInvalid`;
-- expanding request specs;
-- testing the behavior where a bookmaker belongs to another user;
-- validating the 404 resource-visibility behavior.
+- removing premature Account-related production code;
+- verifying synchronous authorized deletion;
+- adding a `Bookmakers::DestroyService` service spec;
+- strengthening success and failure request specs;
+- verifying `30 examples, 0 failures`;
+- verifying `git diff --check` with no whitespace errors;
+- verifying Zeitwerk eager loading with `All is good!`.
 
-The backend currently contains:
-
-- 9 modified files
-- 2 untracked files
-
-related to this work.
+GitHub shows the Day 37 changes pushed directly to `jeanflaragao/backend`'s `main` branch. No open or merged pull request was found for these commits.
 
 ---
 
 # Recommended Next Engineering Step
 
-The immediate engineering priority is to finish and validate the ADR-0001/ADR-0002 implementation.
+The next logical product step is to design the Account domain when its requirements are ready. Only then should bookmaker deletion be revisited for a real active-account invariant.
 
-This includes:
-
-- complete the centralized exception handling;
-- complete the relevant request and service specs;
-- wire `ActiveAccountsExistError` into `Bookmakers::DestroyService`;
-- verify the resulting behavior;
-- commit the implementation;
-- promote ADR-0002 from Proposed to Accepted once validated by implementation and tests.
-
-After that, the next major engineering priority is to re-enable CI because the workflow already exists but is currently disabled.
+ADR-0002 should remain Proposed until a genuine application exception propagation workflow validates it. Independently, re-enabling CI remains an important production-readiness step because the workflow exists but is disabled.
 
 ---
 

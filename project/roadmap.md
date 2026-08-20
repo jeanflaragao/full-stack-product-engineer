@@ -178,6 +178,20 @@ Important areas already explored include:
 - information leakage
 - controller/service boundaries
 
+## Verified Outcomes
+
+Day 37 verified the current bookmaker-destruction boundary:
+
+- `Bookmakers::DestroyService` performs synchronous deletion;
+- successful deletion returns `204 No Content` with an empty body;
+- invisible and nonexistent resources return the structured `404 Not Found` contract;
+- unauthenticated deletion returns `401 Unauthorized`;
+- service and request specs verify behavior and database effects;
+- the backend suite passes with `30 examples, 0 failures`;
+- Zeitwerk eager loading succeeds.
+
+The active-account deletion guard is deferred until the Account domain exists and supplies an executable business invariant. Creating that domain remains future product work governed by the `betting-platform` roadmap. The current milestone remains In Progress; this deletion slice does not complete transaction, idempotency, background-processing, observability, or other production-readiness capabilities.
+
 ## Engineering Objective
 
 Move from:

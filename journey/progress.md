@@ -6,17 +6,17 @@ This document is the rollup of recorded engineering sessions. It should summariz
 
 ## Recording Status
 
-**Session records in this repository:** None
+**Session records in this repository:** Day 37
 
-**Historical starting day:** Unknown — not currently documented
+**Latest recorded session:** [`../sessions/day-037.md`](../sessions/day-037.md)
 
-The application repository contains a tactical `SESSION.md`, but that file is not a complete, sequential history of the Full Stack Product Engineer journey and is explicitly described as stale in parts. It is therefore insufficient evidence for reconstructing numbered historical sessions here.
+The user explicitly identified the completed work as Day 37. Earlier numbered sessions remain unrecorded in this repository and have not been reconstructed.
 
 No retrospective session history has been invented to fill this gap.
 
 ## Current Orientation
 
-Until session records begin, use these sources for established context:
+Use these sources for established context:
 
 - [`../project/current-state.md`](../project/current-state.md) for what is actually true about the application now;
 - [`milestones.md`](milestones.md) for milestones supported by evidence;
@@ -41,11 +41,11 @@ Production Readiness
 
 This orientation is derived from current state and milestone records, not from reconstructed session history.
 
-## Start Rule
+## Current Learning Focus
 
-Before creating the first `sessions/day-NNN.md` file, determine the correct day number from reliable historical evidence or obtain an explicit user decision about the numbering baseline.
+Day 37 established that future requirements should remain in roadmap and documentation until their domain dependencies exist. It verified synchronous bookmaker deletion, reinforced the distinction between service behavior and HTTP contracts, and kept ADR-0002 Proposed pending a real exception-propagation workflow.
 
-Once session recording starts, update this file with:
+Future session records should continue to capture:
 
 - the latest recorded session;
 - the current learning and engineering focus;
