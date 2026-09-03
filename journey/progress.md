@@ -6,9 +6,13 @@ This document is the rollup of recorded engineering sessions. It should summariz
 
 ## Recording Status
 
-**Session records in this repository:** Day 37
+**Main-track session records in this repository:** Day 37
 
-**Latest recorded session:** [`../sessions/day-037.md`](../sessions/day-037.md)
+**Latest recorded main-track session:** [`../sessions/day-037.md`](../sessions/day-037.md)
+
+**AWS Foundations session records in this repository:** AWS Day 1
+
+**Latest recorded AWS session:** [`../sessions/aws/day-001.md`](../sessions/aws/day-001.md)
 
 The user explicitly identified the completed work as Day 37. Earlier numbered sessions remain unrecorded in this repository and have not been reconstructed.
 
@@ -43,7 +47,9 @@ This orientation is derived from current state and milestone records, not from r
 
 ## Current Learning Focus
 
-Day 37 established that future requirements should remain in roadmap and documentation until their domain dependencies exist. It verified synchronous bookmaker deletion, reinforced the distinction between service behavior and HTTP contracts, and kept ADR-0002 Proposed pending a real exception-propagation workflow.
+The main track remains at Day 38 and Milestone 2 — Application Architecture. Day 37 established that future requirements should remain in roadmap and documentation until their domain dependencies exist. It verified synchronous bookmaker deletion, reinforced the distinction between service behavior and HTTP contracts, and kept ADR-0002 Proposed pending a real exception-propagation workflow.
+
+The parallel AWS Foundations track completed AWS Day 1. It established the cloud and shared-responsibility mental models, compared EC2-hosted PostgreSQL with RDS, and introduced single points of failure and availability trade-offs. This track does not change the main-track day number or milestone state.
 
 Future session records should continue to capture:
 

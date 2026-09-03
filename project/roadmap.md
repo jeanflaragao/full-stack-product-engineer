@@ -369,6 +369,61 @@ Engineer becomes dependent on generated code
 
 ---
 
+# Parallel Track — AWS Foundations
+
+**Status:** In Progress
+
+This track develops practical AWS competence for Backend and Product Engineering. It runs independently from the main milestone sequence, so completing an AWS session does not advance or renumber the main engineering days.
+
+## Learning Model
+
+- independent numbering: AWS Day 1, AWS Day 2, and so on;
+- sessions of approximately 30–45 minutes;
+- architecture-first reasoning;
+- questions before implementation;
+- explicit trade-off analysis;
+- the Betting Operations Management Platform as the practical laboratory;
+- technical English integrated into architecture explanations;
+- practical operational competence rather than certification-first preparation.
+
+## Capability Progression
+
+- cloud computing mental models;
+- AWS global infrastructure;
+- shared responsibility;
+- identity and access management;
+- networking and VPC fundamentals;
+- compute and deployment options;
+- managed PostgreSQL with RDS;
+- object storage with S3;
+- managed Redis and background-processing infrastructure;
+- secrets and configuration;
+- logging, metrics, alarms, and operational visibility;
+- availability, backup, recovery, security, and cost control;
+- deployment of the Betting Platform when the application is ready.
+
+## Completed Sessions
+
+### AWS Day 1 — Cloud Computing and AWS Foundations
+
+The session established:
+
+- cloud infrastructure as a programmable, usage-priced resource;
+- the distinction between security **of** the cloud and security **in** the cloud;
+- the customer responsibility for the EC2 guest operating system, security configuration, application security, and credential handling;
+- AWS responsibility for physical facilities and hardware replacement;
+- the operational trade-off between self-managed PostgreSQL on EC2 and Amazon RDS;
+- single points of failure and the distinction between component separation and high availability;
+- an initial, deliberately simple direction of Rails on EC2 with PostgreSQL on RDS, without treating it as a highly available final architecture.
+
+Session record: [`../sessions/aws/day-001.md`](../sessions/aws/day-001.md)
+
+## Current AWS Focus
+
+The next session should build on this mental model before implementation. No AWS service selection recorded in this learning track is an application architecture decision until the relevant product requirement is evaluated and, where necessary, documented through the application roadmap or an ADR.
+
+---
+
 # Cross-Cutting Engineering Capabilities
 
 These capabilities evolve throughout all milestones.
