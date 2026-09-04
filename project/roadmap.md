@@ -418,9 +418,26 @@ The session established:
 
 Session record: [`../sessions/aws/day-001.md`](../sessions/aws/day-001.md)
 
+### AWS Day 2 — VPC, Subnets, Security Groups, and Failure Boundaries
+
+The session established:
+
+- VPC as the private network boundary for the application's AWS resources;
+- a public application tier for EC2/Rails and a private data tier for RDS/PostgreSQL as the initial networking mental model;
+- the distinction between subnet/routing responsibility and Security Group traffic rules;
+- PostgreSQL access on TCP 5432 restricted to the Rails application Security Group instead of `0.0.0.0/0` or a single EC2 IP;
+- the principle that database administrative access should use an authenticated controlled path rather than requiring public RDS exposure;
+- the distinction between component health and end-to-end system health;
+- evidence-driven diagnosis of connectivity failures before restarting healthy resources;
+- total cost of ownership as the appropriate frame for comparing self-managed PostgreSQL with RDS.
+
+Session record: [`../sessions/aws/day-002.md`](../sessions/aws/day-002.md)
+
 ## Current AWS Focus
 
-The next session should build on this mental model before implementation. No AWS service selection recorded in this learning track is an application architecture decision until the relevant product requirement is evaluated and, where necessary, documented through the application roadmap or an ADR.
+AWS Day 3 should refine how the public/private subnet model actually works: route tables, Internet Gateways, public IP addressing, outbound internet access, and NAT Gateway concepts and cost trade-offs. The track should continue to reason about the current EC2/RDS architecture before implementing infrastructure.
+
+No AWS service selection recorded in this learning track is an application architecture decision until the relevant product requirement is evaluated and, where necessary, documented through the application roadmap or an ADR.
 
 ---
 
@@ -432,7 +449,7 @@ These capabilities evolve throughout all milestones.
 
 - unit testing
 - request testing
-- integration testing
+- integration thinking
 - authorization testing
 - failure testing
 - regression protection
