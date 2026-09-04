@@ -10,9 +10,9 @@ This document is the rollup of recorded engineering sessions. It should summariz
 
 **Latest recorded main-track session:** [`../sessions/day-037.md`](../sessions/day-037.md)
 
-**AWS Foundations session records in this repository:** AWS Day 1
+**AWS Foundations session records in this repository:** AWS Day 1–2
 
-**Latest recorded AWS session:** [`../sessions/aws/day-001.md`](../sessions/aws/day-001.md)
+**Latest recorded AWS session:** [`../sessions/aws/day-002.md`](../sessions/aws/day-002.md)
 
 The user explicitly identified the completed work as Day 37. Earlier numbered sessions remain unrecorded in this repository and have not been reconstructed.
 
@@ -49,7 +49,7 @@ This orientation is derived from current state and milestone records, not from r
 
 The main track remains at Day 38 and Milestone 2 — Application Architecture. Day 37 established that future requirements should remain in roadmap and documentation until their domain dependencies exist. It verified synchronous bookmaker deletion, reinforced the distinction between service behavior and HTTP contracts, and kept ADR-0002 Proposed pending a real exception-propagation workflow.
 
-The parallel AWS Foundations track completed AWS Day 1. It established the cloud and shared-responsibility mental models, compared EC2-hosted PostgreSQL with RDS, and introduced single points of failure and availability trade-offs. This track does not change the main-track day number or milestone state.
+The parallel AWS Foundations track completed AWS Day 2. The track now has a first networking architecture for the Betting Platform: a VPC containing a public application tier with EC2/Rails and a private data tier with RDS/PostgreSQL, with Security Groups restricting PostgreSQL access to the application tier. Day 2 also introduced evidence-driven diagnosis of EC2-to-RDS connectivity failures, distinguished component health from end-to-end system health, and refined the EC2-versus-RDS decision using total cost of ownership. The next AWS session should refine the subnet model with route tables, Internet Gateways, public IP addressing, outbound access, and NAT Gateway trade-offs. This track does not change the main-track day number or milestone state.
 
 Future session records should continue to capture:
 
